@@ -1,5 +1,19 @@
 import pymorphy2
 import string
+import os
+
+
+def load_charged_words(directory_path):
+    charged_words = []
+
+    for filename in os.listdir(directory_path):
+        if filename.endswith('.txt'):
+            filepath = os.path.join(directory_path, filename)
+            with open(filepath, 'r', encoding='utf-8') as f:
+                words = [line.strip().lower() for line in f if line.strip()]
+                charged_words.extend(words)
+
+    return charged_words
 
 
 def _clean_word(word):
