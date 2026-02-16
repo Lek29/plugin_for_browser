@@ -64,7 +64,7 @@ async def processing_article(session, morph, url, charged_words, results):
                     html = await  response.text()
                     try:
                         clean_text = sanitize(html, plaintext=True)
-                        words = split_by_words(morph, clean_text)
+                        words = await split_by_words(morph, clean_text)
                         rate = calculate_jaundice_rate(words, charged_words)
                         words_count = len(words)
                     except ArticleNotFound:
@@ -111,8 +111,6 @@ async def main():
             for url in TEST_ARTICLE:
                 tg.start_soon(processing_article, session, morph, url, charged_words, results)
 
-    # for res in results:
-    #     print(f"URL: {res['url']}\nСтатус: {res['status']}\nРейтинг: {res['score']}\nСлов: {res['words_count']}\n")
 
 if __name__ == '__main__':
     asyncio.run(main())
