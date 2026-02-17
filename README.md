@@ -21,7 +21,7 @@
    ```bash
    python -m venv .venv
    source .venv/bin/activate  # Для Linux/macOS
-   # или
+
    .venv\Scripts\activate     # Для Windows
 2. **Установите зависимости:**
 
