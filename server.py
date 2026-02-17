@@ -1,11 +1,11 @@
 import aiohttp
 import anyio
 from aiohttp import web
-import asyncio
+
 import pymorphy2
 from functools import partial
 
-from main import processing_article, ProcessingStatus
+from main import processing_article
 from text_tools import load_charged_words
 
 

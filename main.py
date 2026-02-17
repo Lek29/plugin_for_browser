@@ -72,6 +72,7 @@ async def processing_article(session, morph, url, charged_words, results):
 
         except asyncio.TimeoutError:
             status = ProcessingStatus.TIMEOUT
+
         except (aiohttp.ClientError, aiohttp.http_exceptions.HttpProcessingError):
             status = ProcessingStatus.FETCH_ERROR
 
