@@ -18,8 +18,9 @@ async def handle_analyse(morph, charged_words, request):
         )
     urls = urls_raw.split(',')
 
-    if len(urls) > 10:
-        return web.json_response({'error': 'too many urls'}, status=200)
+    max_urls_per_request = 10
+    if len(urls) > max_urls_per_request:
+        return web.json_response({'error': 'too many urls'}, status=400)
 
     results = []
 
@@ -43,7 +44,7 @@ def make_app(morph_analyzer, words_dictonary):
 
     handler = partial(handle_analyse, morph_analyzer, words_dictonary)
 
-    app.add_routes([web.get('/analyse', handler)])
+    app_instance.add_routes([web.get('/analyse', handler)])
 
     return app_instance
 
