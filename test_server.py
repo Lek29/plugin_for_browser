@@ -1,6 +1,8 @@
-import pytest
 import aiohttp
-from main import processing_article, ProcessingStatus
+import pytest
+
+from main import ProcessingStatus, processing_article
+
 
 @pytest.mark.asyncio
 async def test_processing_article_fetch_error():
@@ -11,9 +13,8 @@ async def test_processing_article_fetch_error():
     async with aiohttp.ClientSession() as session:
         await processing_article(session, None, url, {}, results)
 
-
     assert results[0]['status'] == ProcessingStatus.FETCH_ERROR
-    assert  results[0]['url'] == url
+    assert results[0]['url'] == url
 
 
 @pytest.mark.asyncio

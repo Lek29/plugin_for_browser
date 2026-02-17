@@ -1,9 +1,9 @@
+from functools import partial
+
 import aiohttp
 import anyio
-from aiohttp import web
-
 import pymorphy2
-from functools import partial
+from aiohttp import web
 
 from main import processing_article
 from text_tools import load_charged_words
@@ -13,7 +13,7 @@ async def handle_analyse(morph, charged_words, request):
     urls_raw = request.query.get('urls')
     if not urls_raw:
         return web.json_response(
-            {"error": "bad request, no urls provided"},
+            {'error': 'bad request, no urls provided'},
             status=400
         )
     urls = urls_raw.split(',')
@@ -39,10 +39,10 @@ async def handle_analyse(morph, charged_words, request):
     return web.json_response(results)
 
 
-def make_app(morph_analyzer, words_dictonary):
+def make_app(morph_analyzer, words_dictionary):
     app_instance = web.Application()
 
-    handler = partial(handle_analyse, morph_analyzer, words_dictonary)
+    handler = partial(handle_analyse, morph_analyzer, words_dictionary)
 
     app_instance.add_routes([web.get('/analyse', handler)])
 

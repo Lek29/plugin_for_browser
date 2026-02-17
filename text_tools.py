@@ -1,9 +1,9 @@
 import asyncio
+import os
+import string
 
 import pymorphy2
 import pytest
-import string
-import os
 
 
 def load_charged_words(directory_path):

@@ -1,19 +1,19 @@
+import asyncio
 import logging
 import sys
-
-import anyio
-import pymorphy2
-import aiohttp
-import asyncio
-import async_timeout
 import time
-
-from text_tools import split_by_words, calculate_jaundice_rate, load_charged_words
-from adapters.inosmi_ru import sanitize
-from adapters.exceptions import ArticleNotFound
-from enum import Enum
 from contextlib import contextmanager
+from enum import Enum
 
+import aiohttp
+import anyio
+import async_timeout
+import pymorphy2
+
+from adapters.exceptions import ArticleNotFound
+from adapters.inosmi_ru import sanitize
+from text_tools import (calculate_jaundice_rate, load_charged_words,
+                        split_by_words)
 
 TEST_ARTICLE = [
         'https://inosmi.ru/20260212/olimpiada-277075823.html',
@@ -30,17 +30,17 @@ logger = logging.getLogger(__name__)
 @contextmanager
 def duration(url):
     start_time = time.monotonic()
-    article_info = {"status": "UNKNOWN", "rate": None, "words": None}
+    article_info = {'status': 'UNKNOWN', 'rate': None, 'words': None}
     try:
         yield article_info
     finally:
         end_time = time.monotonic()
         logging.info(
-            f"\nURL: {url}\n"
-            f"Статус: {article_info['status']}\n"
-            f"Рейтинг: {article_info['rate']}\n"
-            f"Слов в статье: {article_info['words']}\n"
-            f"Анализ закончен за {end_time - start_time:.2f} сек\n"
+            f'\nURL: {url}\n'
+            f'Статус: {article_info["status"]}\n'
+            f'Рейтинг: {article_info["rate"]}\n'
+            f'Слов в статье: {article_info["words"]}\n'
+            f'Анализ закончен за {end_time - start_time:.2f} сек\n'
         )
 
 
@@ -61,7 +61,7 @@ async def processing_article(session, morph, url, charged_words, results):
             async with async_timeout.timeout(3):
                 async with session.get(url) as response:
                     response.raise_for_status()
-                    html = await  response.text()
+                    html = await response.text()
                     try:
                         clean_text = sanitize(html, plaintext=True)
                         words = await split_by_words(morph, clean_text)
@@ -76,15 +76,15 @@ async def processing_article(session, morph, url, charged_words, results):
         except (aiohttp.ClientError, aiohttp.http_exceptions.HttpProcessingError):
             status = ProcessingStatus.FETCH_ERROR
 
-        info["status"] = status.value
-        info["rate"] = rate
-        info["words"] = words_count
+        info['status'] = status.value
+        info['rate'] = rate
+        info['words'] = words_count
 
         results.append({
             'url': url,
             'status': status.value,
             'score': rate,
-            'words_count':words_count
+            'words_count': words_count
         })
 
 

@@ -1,9 +1,9 @@
-from bs4 import BeautifulSoup
-import requests
 import pytest
+import requests
+from bs4 import BeautifulSoup
 
 from .exceptions import ArticleNotFound
-from .html_tools import remove_buzz_attrs, remove_buzz_tags, remove_all_tags
+from .html_tools import remove_all_tags, remove_buzz_attrs, remove_buzz_tags
 
 
 def sanitize(html, plaintext=False):
