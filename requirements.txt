@@ -1,5 +1,7 @@
 aiohttp==3.*
 aiodns==2.*
+anyio==4.12.1
+async-timeout==5.0.1
 beautifulsoup4==4.*
 requests==2.*
 pytest==9.*
