@@ -29,7 +29,19 @@
     pip install -r requirements.txt
     ```
 ---
+## Подготовка окружения
+Создайте файл `.env` в корневой папке и настройте параметры (или скопируйте пример ниже):
 
+```env
+# Настройки Redis
+REDIS_HOST=redis_db
+REDIS_PASSWORD=change_this_to_secure_password
+REDIS_PORT=6379
+
+# Настройки приложения
+APP_EXTERNAL_PORT=8080
+```
+---
 ## Как запустить
 Запустите сервер командой:
 
@@ -38,26 +50,11 @@ python server.py
 ```
 Сервер будет доступен по адресу: `http://localhost:8080`
 
-## Запуск через Docker
+## Запуск с docker-compose
 
-Самый быстрый способ запустить проект, не устанавливая Python и библиотеки на свой компьютер:
-
-1. **Соберите образ:**
-   ```bash
-   docker build -t news-filter .
-
-2. **Запустите контейнер:**
-
-```Bash
-  docker run -d -p 8080:8080 --name my-news-filter news-filter
+```bash
+  docker-compose up --build
 ```
-Параметр `-d` запустит контейнер в фоновом режиме, а `-p` пробросит порты.
-
-3. **Остановка:**
-
- ```Bash
-   docker stop my-news-filter
- ```
 ---
 ## Использование API
 Эндпоинт: `GET /analyse?urls=...`
@@ -68,7 +65,7 @@ python server.py
 
 **Пример ответа:**
 
-```JSON
+```json
 [
   {
     "status": "OK",
@@ -78,6 +75,7 @@ python server.py
   }
 ]
 ```
+
 ---
 ## Защита и ограничения
 Сервер имеет встроенную защиту от перегрузок:
