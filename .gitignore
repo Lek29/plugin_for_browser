@@ -172,3 +172,4 @@ pyrightconfig.json
 
 *.txt
 .flake8
+/.env

@@ -1,6 +1,5 @@
 import json
 import os
-import time
 from functools import partial
 
 import redis.asyncio as redis
@@ -14,7 +13,6 @@ from text_tools import load_charged_words
 
 
 async def handle_analyse(morph, charged_words, redis_conn, request):
-    start_time = time.monotonic()
     urls_raw = request.query.get('urls')
     if not urls_raw:
         return web.json_response(
@@ -57,15 +55,20 @@ async def handle_analyse(morph, charged_words, redis_conn, request):
             await redis_conn.set(res['url'], json.dumps(res), ex=180)
 
             results.append(res)
-    execution_time = time.monotonic() - start_time
-    print(f"Запрос обработан за {execution_time:.4f} сек")
+
     return web.json_response(results)
 
 
 def make_app(morph_analyzer, words_dictionary):
     app_instance = web.Application()
     redis_host = os.getenv('REDIS_HOST', 'localhost')
-    redis_conn = redis.Redis(host=redis_host, port=6379, decode_responses=True)
+    redis_password = os.getenv('REDIS_PASSWORD', None)
+    redis_conn = redis.Redis(
+        host=redis_host,
+        port=6379,
+        decode_responses=True,
+        password=redis_password
+    )
 
     handler = partial(handle_analyse, morph_analyzer, words_dictionary, redis_conn)
 
